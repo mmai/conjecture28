@@ -9,7 +9,7 @@ intersectSorted3 _ [] _ _ = []
 intersectSorted3 _ _ [] _ = []
 intersectSorted3 _ _ _ [] = []
 intersectSorted3 exp (x:xs) (y:ys) (z:zs)
-        | x > (10 ^ exp) && (x < y)  && (x < z) = (-10 ^ exp):(intersectSorted3 (exp + 1) (x:xs) (y:ys) (z:zs))
+        | x > (10 ^ exp) && (x < y)  && (x < z) = (-exp):(intersectSorted3 (exp + 1) (x:xs) (y:ys) (z:zs))
         | x < y  && x < z = intersectSorted3 exp xs (y:ys) ( z:zs ) 
         | x < y  && x == z = intersectSorted3 exp xs ( y:ys ) zs 
         | x < y  && x > z = intersectSorted3 exp ( x:xs ) (y:ys) zs 
