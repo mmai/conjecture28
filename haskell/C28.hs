@@ -9,15 +9,15 @@ intersectSorted3 _ [] _ _ = []
 intersectSorted3 _ _ [] _ = []
 intersectSorted3 _ _ _ [] = []
 intersectSorted3 exp (x:xs) (y:ys) (z:zs)
-        | x > (10 ^ exp) && (x < y)  && (x < z) = (-exp):(intersectSorted3 (exp + 1) (x:xs) (y:ys) (z:zs))
-        | x < y  && x < z = intersectSorted3 exp xs (y:ys) ( z:zs ) 
-        | x < y  && x == z = intersectSorted3 exp xs ( y:ys ) zs 
-        | x < y  && x > z = intersectSorted3 exp ( x:xs ) (y:ys) zs 
-        | x == y  && x < z = intersectSorted3 exp xs ys (z:zs) 
-        | x == y  && x == z = x:(intersectSorted3 exp xs ys zs)
-        | x == y  && x > z = intersectSorted3 exp (x:xs) (x:ys) zs 
-        | x > y  && x <= z = intersectSorted3 exp ( x:xs ) ys ( z:zs ) 
-        | x > y  && x > z = intersectSorted3 exp ( y:ys ) ( x:xs ) ( z:zs ) 
+        | x < y  && x < z && (x > 10 ^ exp) = (-exp):(intersectSorted3 (exp + 1) (x:xs) (y:ys) (z:zs))
+        | x < y  && x < z                 = intersectSorted3 exp xs (y:ys) ( z:zs ) 
+        | x < y  && x == z                = intersectSorted3 exp xs ( y:ys ) zs 
+        | x < y  && x > z                 = intersectSorted3 exp ( x:xs ) (y:ys) zs 
+        | x == y && x < z                 = intersectSorted3 exp xs ys (z:zs) 
+        | x == y && x == z                = x:(intersectSorted3 exp xs ys zs)
+        | x == y && x > z                 = intersectSorted3 exp (x:xs) (x:ys) zs 
+        | x > y  && x <= z                = intersectSorted3 exp ( x:xs ) ys ( z:zs ) 
+        | x > y  && x > z                 = intersectSorted3 exp ( y:ys ) ( x:xs ) ( z:zs ) 
 
 -- list of the sums of integers : 1, 1+2, 1+2+3, ...
 sumInt = scanl1 (+) [1..]
@@ -29,8 +29,13 @@ sumPrimes = scanl1 (+) primes
 sumNonPrimes = scanl1 (+) nonprimes
 
 nonprimes = filter (not . isPrime) [1..]
+
+display::Integer -> IO ()
+display x
+        | x < 0 = putStr $ "\nSearching for candidates > 10 ^ " ++ (show (-x))
+        | otherwise = putStr $ "\n\nFound : " ++ (show x) ++ "\n"
  
 main :: IO ()
 main = do 
-  print (intersectSorted3 0 sumInt sumPrimes sumNonPrimes)
+  mapM_ display (intersectSorted3 1 sumInt sumPrimes sumNonPrimes)
  
