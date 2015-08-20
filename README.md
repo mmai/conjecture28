@@ -10,6 +10,5 @@ I was not able to prove it (is it related to the Riemann hypothesis ?).
 ## Usage
 
 ```sh
-cd haskell
-cabal run
+runhaskell haskell/C28.hs
 ```
